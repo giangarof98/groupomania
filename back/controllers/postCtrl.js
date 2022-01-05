@@ -24,8 +24,6 @@ exports.create = async (req, res) => {
           });
           else res.send(data)
       })
-    
-    
 };
 
 exports.getAll = (req, res) => {
@@ -39,6 +37,30 @@ exports.getAll = (req, res) => {
         }
         else res.send(data);
     })
+}
+
+exports.update = (req, res) => {
+  if(!req.body){
+    res.status(400).send({message: 'post dont found!'});
+  }
+  console.log(req.body)
+
+  const url = req.protocol + '://' + req.get('host');
+      const post = {
+          title: req.body.title,
+          content: req.body.content,
+          imageUrl: url + '/images/' + req.file.filename,
+          // user_id: req.body.user_id
+      };
+
+  Post.updateById(req.params.id, post, (err,data) => {
+    if(err) {
+      if(err.kind === 'not found'){
+        res.status(404).send({message: "post not found"});
+        } else { res.status(500).send({message: 'error while updating!'}); 
+      }
+    } else res.send(data)
+  })
 }
 
 exports.findOne = (req, res) => {

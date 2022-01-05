@@ -5,6 +5,7 @@ const Content = function(content){
     this.userId = content.userId;
     this.postId = content.postId;
 }
+
 Content.create = (newContent, result) => {
     sql.query("INSERT INTO comments SET ?", newContent, (err, res) => {
       if (err) {

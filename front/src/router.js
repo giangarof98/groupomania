@@ -24,6 +24,11 @@ const routes = [
         path: '/post/:id',
         name: 'postId',
         component: () => import('./components/Single')
+    },
+    {
+        path: '/update/:id',
+        name: 'update',
+        component: () => import('./components/Modify')
     }
 ]
 

@@ -38,6 +38,24 @@ Post.getAll = (title, result) => {
     })
 };
 
+Post.updateById = (id, post, result ) => {
+  sql.query("UPDATE posts SET title = ?, content = ?, imageUrl = ? WHERE id = ?", 
+  [post.title, post.content, post.imageUrl, id], 
+  (err, res) => {
+    if(err) {
+      console.log("err", err)
+      result(null, err);
+      return;
+    }
+    if(res.affectedRows == 0){
+      result({kind: "not found"}, null);
+      return;
+    }
+    console.log('post updated!', {id: id, ...post});
+    result(null,{id: id, ...post})
+  })
+}
+
 Post.findOne = (id, result) => {
     sql.query(`SELECT * FROM posts WHERE id = ${id}`, (err, res) => {
         if (err) {

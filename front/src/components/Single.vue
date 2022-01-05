@@ -15,6 +15,7 @@
             <div class="center">
                 <h2> {{ post.title }}</h2>
                 <h3 id="h3">By: {{ post.user_id }}</h3>
+                <p id="modify" v-if="name === post.user_id" @click="hello" >Modify Post</p>
                 <img id="img" :src='post.imageUrl' alt="">
                 <h4 v-if="name == post.user_id" @click="remove">Delete Post</h4>
                 <p id="post-content"> {{ post.content }}</p>
@@ -32,7 +33,8 @@
 
                 <div class="comment-box" v-for="comments in textContent" v-bind:key="comments.postId">
                     <div v-if="post.id == comments.postId" class="comment">
-                        <a v-if="name === comments.userId" id="delete" @click="deleteComment(comments.id)">X</a>
+                        <!-- <a v-if="name === comments.userId &&  name === post.user_id" id="delete" @click="deleteComment(comments.id)">X</a> -->
+                        <a v-if="name === comments.userId || name === post.user_id" id="delete" @click="deleteComment(comments.id)">X</a>
                         <h3>{{ comments.userId }}: </h3>
                         <p>{{ comments.text_content }}</p>
                     </div>
@@ -76,6 +78,9 @@ export default {
             })
     },
     methods: {
+        hello(){
+            this.$router.push('/update/' + this.$route.params.id)
+        },
         remove(){
             axios.delete('http://localhost:3000/api/post/' + this.$route.params.id)
             this.$router.push('/')
@@ -129,6 +134,11 @@ export default {
     font-family: 'Nunito', sans-serif;
     color: inherit;
     text-decoration: none;
+}
+
+#modify{
+    color: rgb(75, 143, 182);
+    cursor: pointer;
 }
 
 .comment-box{

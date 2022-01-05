@@ -9,9 +9,9 @@
         </ul>
     </nav>
 
-    <h1>Create Post</h1>
+    <h1>Update Post</h1>
     <section>
-        <form @submit.prevent="upload" enctype="multipart/form-data" class="content">
+        <form @submit.prevent="update" enctype="multipart/form-data" class="content">
             <div class="title">
                 <h3>Add title:</h3>
                 <input type="text" v-model="title" required>
@@ -24,29 +24,34 @@
 
             <div class="file">
                 <h3>Add image:</h3>
-                <!-- <input type="file" multiple @change="imageUrl"> -->
-                <input type="file" ref="file" @change="selectFile" required>
+                <input type="file" ref="file" multiple @change="selectFile">
+                <!-- <input type="file" multiple> -->
             </div>
-            <button type="submit" >Add Post</button>
+            <button type="submit">Add Post</button>
         </form>
     </section>
 </template>
 
 <script>
-
 import axios from 'axios'
-
 export default {
-    name: 'Add',
     data(){
         return{
-            title: '',
+            post:{},
+            title:'',
             content: '',
-            file: '',
-            user_id: localStorage.getItem('name')
+            imageUrl:'',
         }
     },
-    methods:{
+    async created(){
+        let resp = await axios.get('http://localhost:3000/api/post/' + this.$route.params.id)
+        this.post = resp.data;
+        this.title = resp.data.title
+        this.content = resp.data.content
+        this.imageUrl = resp.data.imageUrl
+        console.log(resp.data.title)
+    },
+    methods: {
         logout(){
             localStorage.removeItem('token')
             localStorage.removeItem('name')
@@ -57,22 +62,24 @@ export default {
             this.file = this.$refs.file.files[0]
             console.log(this.$refs.file.files[0])
         },
-        async upload(){
+        async update(){
+            // const data = {
+            //     title: this.title,
+            //     content: this.content,
+            //     imageUrl: this.imageUrl,
+            // }
+            // console.log(data)
             const formData = new FormData()
             formData.append('images', this.file)
             formData.append('title', this.title)
             formData.append('content', this.content)
-            formData.append('user_id', this.user_id)
-            try{
-                await axios.post('http://localhost:3000/api/post/', formData)
+            await axios.put('http://localhost:3000/api/post/' + this.$route.params.id, formData)
+                .then(res =>{ console.log(res)})
+                .catch(err => {console.log(err)})
                 this.$router.push('/')
-            } catch(err){
-                console.log(err)
-            }
         }
     }
 }
-
 </script>
 
 <style scoped>
