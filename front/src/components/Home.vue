@@ -14,7 +14,8 @@
     <div class="info">
         <h3>Welcome, {{name}} </h3>
     </div>
-        <div class="content" v-for="post in title.slice().reverse()" v-bind:key="post.id" >
+    <!-- v-for="post in title.slice().reverse()" v-bind:key="post.id" -->
+        <div class="content" v-for="post in title" v-bind:key="post.id">
             <!-- <a :href="`/post/${post.id}`"> -->
                 <router-link :to="`/post/${post.id}`">
                     <div class="center">
@@ -69,7 +70,7 @@ export default {
             },
     },
     async created(){
-        axios.get('http://localhost:3000/api/post')
+        axios.get('http://localhost:3000/api/post/')
             .then((res) => {
                 this.title = res.data
                 this.imageUrl = res.data
