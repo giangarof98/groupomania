@@ -2,7 +2,7 @@ const Post = require('../model/post');
 const auth = require('../middleware/auth')
 const fs = require('fs');
 
-exports.create = async (req, res) => {
+exports.create = (req, res, next) => {
     if (!req.body) {
         res.status(400).send({
           message: "Content can not be empty!"
@@ -26,7 +26,7 @@ exports.create = async (req, res) => {
       })
 };
 
-exports.getAll = (req, res) => {
+exports.getAll = (req, res, next) => {
     const title = req.query.title;
 
     Post.getAll(title, (err, data) => {
@@ -39,7 +39,7 @@ exports.getAll = (req, res) => {
     })
 }
 
-exports.update = (req, res) => {
+exports.update = (req, res, next) => {
   if(!req.body){
     res.status(400).send({message: 'post dont found!'});
   }
@@ -63,7 +63,7 @@ exports.update = (req, res) => {
   })
 }
 
-exports.findOne = (req, res) => {
+exports.findOne = (req, res, next) => {
     Post.findOne(req.params.id, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
@@ -79,7 +79,7 @@ exports.findOne = (req, res) => {
     });
 };
 
-exports.delete = (req, res) => {
+exports.delete = (req, res, next) => {
     Post.remove(req.params.id, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {

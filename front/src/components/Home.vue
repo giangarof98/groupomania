@@ -10,7 +10,6 @@
         </ul>
     </nav>
 
-
     <section>
     <div class="info">
         <h3>Welcome, {{name}} </h3>
@@ -52,7 +51,7 @@ export default {
         }
     },
     computed: {
-
+    
     },
     methods: {
         removeAccount(){
@@ -88,7 +87,8 @@ export default {
     margin: 0;
     box-sizing: border-box;
     font-family: 'Nunito', sans-serif;
-    color: inherit;
+    color: black;
+    font-weight: bold;
     text-decoration: none;
 }
 
@@ -160,7 +160,8 @@ h3{
 }
 
 #delete{
-    color: red;
+    color: rgb(255, 0, 0);
+    font-weight: bold;
 }
 
 @media screen and (max-width: 900px){

@@ -38,7 +38,7 @@ Post.getAll = (title, result) => {
     })
 };
 
-Post.updateById = (id, post, result ) => {
+Post.updateById = (id, post, result) => {
   sql.query("UPDATE posts SET title = ?, content = ?, imageUrl = ? WHERE id = ?", 
   [post.title, post.content, post.imageUrl, id], 
   (err, res) => {
